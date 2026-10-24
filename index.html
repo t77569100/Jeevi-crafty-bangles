@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login / Sign Up - Jeevi Crafty Bangles</title>
+  <title>Jeevi Crafty Bangles</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #C76B85;
-      --bg-cream: #FFF8F0;
-      --accent-gold: #D4AF37;
-      --text-dark: #3B2A24;
-      --btn-rose: #B84F70;
-      --card-pink: #FCE8EF;
-      --white: #FFFFFF;
+      --primary: #C76B85;          /* Dusty Rose */
+      --bg-cream: #FFF8F0;         /* Cream */
+      --accent-gold: #D4AF37;      /* Gold */
+      --text-dark: #3B2A24;        /* Dark Brown */
+      --btn-rose: #B84F70;         /* Rose Pink */
+      --card-pink: #FCE8EF;        /* Soft Pink */
+      --white: #FFFFFF;            /* White */
     }
 
     * {
@@ -26,192 +26,400 @@
     body {
       background-color: var(--bg-cream);
       color: var(--text-dark);
+      padding-bottom: 70px;
+    }
+
+    header {
+      padding: 16px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .auth-card {
       background: var(--white);
-      padding: 28px 24px;
-      border-radius: 16px;
-      border: 1px solid var(--card-pink);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-      width: 100%;
-      max-width: 400px;
+      border-bottom: 1px solid var(--card-pink);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    h2 {
+    .brand-title {
+      font-size: 1.3rem;
+      font-weight: bold;
       color: var(--primary);
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.4rem;
     }
 
-    .form-group {
-      margin-bottom: 14px;
+    .header-icons {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      font-size: 1.2rem;
     }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
+    .header-icons a {
+      color: var(--text-dark);
+      text-decoration: none;
+      position: relative;
     }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #dcccd0;
-      border-radius: 8px;
-      background: var(--bg-cream);
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .auth-btn {
-      width: 100%;
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
       background: var(--btn-rose);
       color: var(--white);
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+    }
+
+    .search-box {
+      padding: 12px 16px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 25px;
+      border: 1px solid #e0cfcf;
+      outline: none;
+      background: var(--white);
+      font-size: 0.9rem;
+    }
+
+    .banner {
+      margin: 0 16px 16px;
+      background: linear-gradient(135deg, var(--primary), var(--btn-rose));
+      color: var(--white);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(199, 107, 133, 0.2);
+    }
+
+    .banner h3 {
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+
+    .banner p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-bottom: 12px;
+    }
+
+    .banner-btn {
+      background: var(--accent-gold);
+      color: var(--text-dark);
       border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 1rem;
+      padding: 8px 16px;
+      border-radius: 20px;
       font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
+      font-size: 0.8rem;
     }
 
-    .toggle-text {
-      text-align: center;
-      margin-top: 16px;
-      font-size: 0.85rem;
-    }
-
-    .toggle-text a {
-      color: var(--btn-rose);
+    .section-title {
+      padding: 0 16px;
+      font-size: 1.05rem;
       font-weight: bold;
-      text-decoration: none;
-      cursor: pointer;
+      margin-bottom: 12px;
     }
 
-    .msg-box {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      text-align: center;
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 0 16px 16px;
+      scrollbar-width: none;
+    }
+
+    .categories::-webkit-scrollbar {
       display: none;
     }
 
-    .error { background: #ffe6e6; color: #d63031; }
-    .success { background: #e6ffed; color: #27ae60; }
+    .cat-chip {
+      background: var(--card-pink);
+      color: var(--text-dark);
+      padding: 8px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .cat-chip.active {
+      background: var(--btn-rose);
+      color: var(--white);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 16px 20px;
+    }
+
+    .product-card {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--card-pink);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .product-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .product-price {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--btn-rose);
+      margin-bottom: 8px;
+    }
+
+    .add-btn {
+      margin-top: auto;
+      background: var(--card-pink);
+      color: var(--btn-rose);
+      border: 1px solid var(--primary);
+      padding: 7px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--white);
+      border-top: 1px solid var(--card-pink);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.75rem;
+      gap: 4px;
+    }
+
+    .nav-item.active {
+      color: var(--btn-rose);
+    }
+
+    .nav-item i {
+      font-size: 1.15rem;
+    }
   </style>
 </head>
 <body>
 
-  <div class="auth-card">
-    <h2 id="formTitle">உள்நுழைக (Login)</h2>
-
-    <form id="authForm">
-      <div class="form-group">
-        <label>மின்னஞ்சல் (Email)</label>
-        <input type="email" id="email" required placeholder="name@example.com">
-      </div>
-
-      <div class="form-group">
-        <label>கடவுச்சொல் (Password)</label>
-        <input type="password" id="password" required placeholder="••••••••">
-      </div>
-
-      <button type="submit" class="auth-btn" id="submitBtn">Login</button>
-    </form>
-
-    <div id="feedback" class="msg-box"></div>
-
-    <div class="toggle-text">
-      <span id="toggleMsg">கணக்கு இல்லையா?</span> 
-      <a id="toggleLink">Sign Up</a>
+  <header>
+    <div class="brand-title">Jeevi Crafts</div>
+    <div class="header-icons">
+      <a href="cart.html">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="badge" id="cartCount">0</span>
+      </a>
     </div>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" class="search-input" placeholder="🔍 வளையல்கள் மற்றும் கிராஃப்ட் தேடுக...">
   </div>
+
+  <div class="banner">
+    <h3>Silk Thread Sets</h3>
+    <p>பாரம்பரிய கைவினை வளையல்கள் 20% தள்ளுபடி</p>
+    <button class="banner-btn">Explore Now</button>
+  </div>
+
+  <div class="section-title">வகைகள் (Categories)</div>
+  <div class="categories">
+    <div class="cat-chip active" onclick="filterCat('All')">All</div>
+    <div class="cat-chip" onclick="filterCat('Silk Thread')">Silk Thread</div>
+    <div class="cat-chip" onclick="filterCat('Bridal Bangles')">Bridal Bangles</div>
+    <div class="cat-chip" onclick="filterCat('Glass Bangles')">Glass Bangles</div>
+    <div class="cat-chip" onclick="filterCat('Handmade Crafts')">Handmade Crafts</div>
+  </div>
+
+  <div class="section-title">பிரபலமானவை (Featured)</div>
+  <div class="products-grid" id="productsContainer">
+    <p style="padding: 16px; color: #666; grid-column: span 2;">பொருட்கள் ஏற்றப்படுகின்றன...</p>
+  </div>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="cart.html" class="nav-item">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Cart</span>
+    </a>
+    <a href="orders.html" class="nav-item">
+      <i class="fa-solid fa-box-archive"></i>
+      <span>Orders</span>
+    </a>
+    <!-- Dynamic Login/Admin/Profile Button -->
+    <a href="login.html" class="nav-item" id="authNavBtn">
+      <i class="fa-solid fa-user" id="authIcon"></i>
+      <span id="authText">Login</span>
+    </a>
+  </nav>
 
   <script type="module">
     import { 
       auth, 
-      signInWithEmailAndPassword, 
-      createUserWithEmailAndPassword 
+      db, 
+      collection, 
+      getDocs, 
+      onAuthStateChanged, 
+      signOut 
     } from "./js/firebase-config.js";
 
     const ADMIN_EMAIL = "tharuntharu7489@gmail.com";
-    let isLoginMode = true;
+    const authNavBtn = document.getElementById("authNavBtn");
+    const authText = document.getElementById("authText");
+    const authIcon = document.getElementById("authIcon");
+    const container = document.getElementById("productsContainer");
+    const cartCount = document.getElementById("cartCount");
 
-    const formTitle = document.getElementById("formTitle");
-    const submitBtn = document.getElementById("submitBtn");
-    const toggleMsg = document.getElementById("toggleMsg");
-    const toggleLink = document.getElementById("toggleLink");
-    const feedback = document.getElementById("feedback");
+    let allProducts = [];
 
-    toggleLink.onclick = () => {
-      isLoginMode = !isLoginMode;
-      if (isLoginMode) {
-        formTitle.innerText = "உள்நுழைக (Login)";
-        submitBtn.innerText = "Login";
-        toggleMsg.innerText = "கணக்கு இல்லையா?";
-        toggleLink.innerText = "Sign Up";
-      } else {
-        formTitle.innerText = "புதிய கணக்கு (Sign Up)";
-        submitBtn.innerText = "Sign Up";
-        toggleMsg.innerText = "ஏற்கனவே கணக்கு உள்ளதா?";
-        toggleLink.innerText = "Login";
-      }
-    };
-
-    document.getElementById("authForm").onsubmit = async (e) => {
-      e.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
-
-      submitBtn.disabled = true;
-      submitBtn.innerText = "செயல்படுகிறது...";
-
-      try {
-        if (isLoginMode) {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user;
-
-          showMsg("வெற்றிகரமாக உள்நுழைந்துவிட்டீர்கள்!", "success");
-
-          setTimeout(() => {
-            if (user.email === ADMIN_EMAIL) {
-              window.location.href = "admin/index.html"; // Admin எனில் Admin Dashboard செல்லும்
-            } else {
-              window.location.href = "index.html"; // மற்றவர்கள் எனில் முகப்புப் பக்கம் செல்லும்
-            }
-          }, 1000);
-
+    // Login நிலை மற்றும் Admin சரிபார்ப்பு
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (user.email === ADMIN_EMAIL) {
+          // Admin ஆக இருந்தால் நேரடியாக Admin பக்கம் செல்ல வழி
+          authText.innerText = "Admin";
+          authIcon.className = "fa-solid fa-user-shield";
+          authNavBtn.href = "admin/index.html";
+          authNavBtn.onclick = null;
         } else {
-          await createUserWithEmailAndPassword(auth, email, password);
-          showMsg("கணக்கு உருவாக்கப்பட்டது! உள்நுழையலாம்.", "success");
-          setTimeout(() => {
-            window.location.href = "index.html";
-          }, 1000);
+          // சாதாரண பயனர் எனில் Logout வசதி
+          authText.innerText = "Logout";
+          authIcon.className = "fa-solid fa-right-from-bracket";
+          authNavBtn.href = "#";
+          authNavBtn.onclick = async (e) => {
+            e.preventDefault();
+            await signOut(auth);
+            alert("வெற்றிகரமாக வெளியேறிவிட்டீர்கள் (Logged out)!");
+            window.location.reload();
+          };
         }
+      } else {
+        // லாகின் செய்யாத போது Login பக்கத்திற்கு செல்லுதல்
+        authText.innerText = "Login";
+        authIcon.className = "fa-solid fa-user";
+        authNavBtn.href = "login.html";
+        authNavBtn.onclick = null;
+      }
+    });
+
+    // Cart Count Update
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCount.innerText = totalItems;
+    }
+    updateCartBadge();
+
+    // Load Products
+    async function fetchProducts() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        allProducts = [];
+        querySnapshot.forEach(doc => {
+          allProducts.push({ id: doc.id, ...doc.data() });
+        });
+        renderProducts(allProducts);
       } catch (err) {
-        showMsg("பிழை: " + err.message, "error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = isLoginMode ? "Login" : "Sign Up";
+        container.innerHTML = "<p style='color: red; padding: 16px;'>பொருட்களை ஏற்றுவதில் பிழை.</p>";
+      }
+    }
+
+    function renderProducts(items) {
+      if (items.length === 0) {
+        container.innerHTML = "<p style='padding: 16px; color: #666; grid-column: span 2;'>பொருட்கள் எதுவும் இல்லை.</p>";
+        return;
+      }
+      container.innerHTML = items.map(p => `
+        <div class="product-card">
+          <img src="${p.imageUrl}" class="product-img" alt="${p.name}" onerror="this.src='https://via.placeholder.com/150'">
+          <div class="product-info">
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">₹${p.price}</div>
+            <button class="add-btn" onclick="addToCart('${p.id}', '${p.name}', ${p.price}, '${p.imageUrl}')">Add to Cart</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // Category Filter
+    window.filterCat = (category) => {
+      document.querySelectorAll(".cat-chip").forEach(el => el.classList.remove("active"));
+      event.target.classList.add("active");
+      if (category === "All") {
+        renderProducts(allProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.category === category);
+        renderProducts(filtered);
       }
     };
 
-    function showMsg(text, type) {
-      feedback.innerText = text;
-      feedback.className = `msg-box ${type}`;
-      feedback.style.display = "block";
-      setTimeout(() => feedback.style.display = "none", 3500);
-    }
+    // Add To Cart
+    window.addToCart = (id, name, price, imageUrl) => {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const existing = cart.find(i => i.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, name, price, imageUrl, quantity: 1 });
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartBadge();
+      alert("பொருள் கார்ட்டில் சேர்க்கப்பட்டது!");
+    };
+
+    // Search Filter
+    document.getElementById("searchInput").oninput = (e) => {
+      const q = e.target.value.toLowerCase();
+      const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q));
+      renderProducts(filtered);
+    };
+
+    fetchProducts();
   </script>
 </body>
 </html>
