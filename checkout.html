@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Jeevi Crafty Bangles</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #C76B85;
+      --bg-cream: #FFF8F0;
+      --accent-gold: #D4AF37;
+      --text-dark: #3B2A24;
+      --btn-rose: #B84F70;
+      --card-pink: #FCE8EF;
+      --white: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      padding: 16px;
+      padding-bottom: 30px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--card-pink);
+    }
+
+    header a {
+      color: var(--text-dark);
+      font-size: 1.2rem;
+      text-decoration: none;
+    }
+
+    header h2 {
+      font-size: 1.2rem;
+      color: var(--primary);
+    }
+
+    .section-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--card-pink);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--btn-rose);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #dcccd0;
+      border-radius: 6px;
+      outline: none;
+      font-size: 0.9rem;
+      background: var(--bg-cream);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .total-row {
+      font-weight: bold;
+      font-size: 1.05rem;
+      color: var(--btn-rose);
+      border-top: 1px dashed #dcccd0;
+      padding-top: 10px;
+      margin-top: 10px;
+    }
+
+    /* Payment Methods */
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid #ecc9d4;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .payment-option input {
+      width: auto;
+    }
+
+    .pay-btn {
+      width: 100%;
+      background: var(--btn-rose);
+      color: var(--white);
+      border: none;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .demo-tag {
+      font-size: 0.75rem;
+      background: var(--card-pink);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="cart.html"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2>Checkout & Payment</h2>
+  </header>
+
+  <!-- 1. Delivery Details -->
+  <div class="section-card">
+    <div class="card-title"><i class="fa-solid fa-location-dot"></i> டெலிவரி முகவரி</div>
+    <form id="addressForm">
+      <div class="form-group">
+        <label>முழுப் பெயர்</label>
+        <input type="text" id="custName" required placeholder="பெயர்">
+      </div>
+      <div class="form-group">
+        <label>மொபைல் எண்</label>
+        <input type="tel" id="custPhone" required placeholder="10 இலக்க எண்">
+      </div>
+      <div class="form-group">
+        <label>முழு முகவரி & தெரு</label>
+        <textarea id="custAddress" rows="2" required placeholder="வீட்டு எண், தெரு பெயர்"></textarea>
+      </div>
+      <div class="form-group">
+        <label>அஞ்சல் குறியீடு (Pincode)</label>
+        <input type="number" id="custPin" required placeholder="600001">
+      </div>
+    </form>
+  </div>
+
+  <!-- 2. Order Summary -->
+  <div class="section-card">
+    <div class="card-title"><i class="fa-solid fa-receipt"></i> ஆர்டர் விவரம்</div>
+    <div id="summaryItems"></div>
+    <div class="summary-row total-row">
+      <span>மொத்தம் செலுத்த வேண்டியது</span>
+      <span id="finalTotal">₹0</span>
+    </div>
+  </div>
+
+  <!-- 3. Payment Method -->
+  <div class="section-card">
+    <div class="card-title">
+      <i class="fa-solid fa-credit-card"></i> கட்டண முறை 
+      <span class="demo-tag">Demo Mode</span>
+    </div>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="GPay / PhonePe" checked>
+      <span>Google Pay / PhonePe (UPI)</span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Credit/Debit Card">
+      <span>Cards (Credit / Debit)</span>
+    </label>
+
+    <label class="payment-option">
+      <input type="radio" name="payment" value="Cash on Delivery">
+      <span>Cash on Delivery (COD)</span>
+    </label>
+
+    <button type="button" class="pay-btn" id="placeOrderBtn">Confirm & Pay (Demo)</button>
+  </div>
+
+  <script type="module">
+    import { auth, db, collection, addDoc, onAuthStateChanged } from "./js/firebase-config.js";
+
+    let currentUser = null;
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    // Login check
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        alert("தயவுசெய்து முதலில் Login செய்யவும்!");
+        window.location.href = "login.html";
+      } else {
+        currentUser = user;
+      }
+    });
+
+    if (cart.length === 0) {
+      alert("உங்கள் Cart காலியாக உள்ளது!");
+      window.location.href = "index.html";
+    }
+
+    // Render Summary
+    const summaryContainer = document.getElementById("summaryItems");
+    let total = 0;
+
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+      const row = document.createElement("div");
+      row.className = "summary-row";
+      row.innerHTML = `
+        <span>${item.name} x ${item.quantity}</span>
+        <span>₹${item.price * item.quantity}</span>
+      `;
+      summaryContainer.appendChild(row);
+    });
+
+    document.getElementById("finalTotal").innerText = `₹${total}`;
+
+    // Place Order Flow
+    document.getElementById("placeOrderBtn").onclick = async () => {
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const pin = document.getElementById("custPin").value.trim();
+
+      if (!name || !phone || !address || !pin) {
+        alert("அனைத்து முகவரி விவரங்களையும் நிரப்பவும்!");
+        return;
+      }
+
+      const payMode = document.querySelector('input[name="payment"]:checked').value;
+      const btn = document.getElementById("placeOrderBtn");
+      btn.disabled = true;
+      btn.innerText = "Processing Payment...";
+
+      try {
+        // Demo Payment Simulation: Generate Random Transaction ID
+        const demoTxnId = "DEMO_TXN_" + Math.floor(100000 + Math.random() * 900000);
+
+        // Save order to Firestore
+        const orderRef = await addDoc(collection(db, "orders"), {
+          userId: currentUser.uid,
+          userEmail: currentUser.email,
+          customerName: name,
+          phone: phone,
+          address: `${address}, Pincode: ${pin}`,
+          items: cart,
+          totalAmount: total,
+          paymentMethod: payMode,
+          paymentStatus: payMode === "Cash on Delivery" ? "Pending" : "Success (Demo)",
+          transactionId: demoTxnId,
+          orderStatus: "Placed", // Status: Placed, Confirmed, Packed, Shipped, Delivered
+          orderDate: new Date().toISOString()
+        });
+
+        // Cart clear செய்தல்
+        localStorage.removeItem("cart");
+
+        alert("ஆர்டர் வெற்றிகரமாக பதிவு செய்யப்பட்டது!\nOrder ID: " + orderRef.id);
+        window.location.href = "orders.html";
+      } catch (err) {
+        alert("பிழை ஏற்பட்டது: " + err.message);
+        btn.disabled = false;
+        btn.innerText = "Confirm & Pay (Demo)";
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeevi Crafty Bangles - Handmade Crafts</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* 1. UI Design Colors (Project Specification) */
+    :root {
+      --primary: #C76B85;          /* Dusty Rose */
+      --bg-cream: #FFF8F0;         /* Cream */
+      --accent-gold: #D4AF37;      /* Gold */
+      --text-dark: #3B2A24;        /* Dark Brown */
+      --btn-rose: #B84F70;         /* Rose Pink */
+      --card-pink: #FCE8EF;        /* Soft Pink */
+      --white: #FFFFFF;            /* White */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      padding-bottom: 70px; /* Mobile bottom nav space */
+    }
+
+    /* Header & Navigation */
+    header {
+      background-color: var(--white);
+      padding: 14px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(59, 42, 36, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-logo span {
+      color: var(--accent-gold);
+    }
+
+    .header-icons {
+      display: flex;
+      gap: 16px;
+    }
+
+    .header-icons a {
+      color: var(--text-dark);
+      font-size: 1.2rem;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background-color: var(--btn-rose);
+      color: var(--white);
+      font-size: 0.65rem;
+      border-radius: 50%;
+      padding: 2px 5px;
+      font-weight: bold;
+    }
+
+    /* Search Bar */
+    .search-section {
+      padding: 12px 16px;
+    }
+
+    .search-box {
+      display: flex;
+      background: var(--white);
+      border-radius: 25px;
+      padding: 8px 16px;
+      border: 1px solid #ebd9df;
+      align-items: center;
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      width: 100%;
+      background: transparent;
+      margin-left: 8px;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+
+    /* Promotional Banner */
+    .promo-banner {
+      margin: 8px 16px;
+      background: linear-gradient(135deg, var(--primary), var(--btn-rose));
+      color: var(--white);
+      border-radius: 14px;
+      padding: 22px 18px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .promo-banner h2 {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+    }
+
+    .promo-banner p {
+      font-size: 0.85rem;
+      opacity: 0.95;
+      margin-bottom: 12px;
+    }
+
+    .promo-btn {
+      display: inline-block;
+      background-color: var(--accent-gold);
+      color: var(--text-dark);
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-decoration: none;
+    }
+
+    /* Section Headings */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 16px 8px 16px;
+    }
+
+    .section-title h3 {
+      font-size: 1.1rem;
+      color: var(--text-dark);
+    }
+
+    .section-title a {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Categories Horizontal Scroll */
+    .categories-list {
+      display: flex;
+      overflow-x: auto;
+      gap: 12px;
+      padding: 6px 16px 14px 16px;
+      scrollbar-width: none;
+    }
+
+    .categories-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .category-chip {
+      background-color: var(--card-pink);
+      padding: 8px 18px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      border: 1px solid #f3cfda;
+      cursor: pointer;
+    }
+
+    .category-chip.active {
+      background-color: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+    }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      padding: 8px 16px;
+    }
+
+    .product-card {
+      background-color: var(--card-pink);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #f5d4df;
+      position: relative;
+    }
+
+    .wishlist-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--white);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      background-color: #eee;
+    }
+
+    .product-info {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .product-cat {
+      font-size: 0.7rem;
+      color: var(--primary);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .product-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin: 3px 0 6px 0;
+      line-height: 1.2;
+    }
+
+    .product-price {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--btn-rose);
+      margin-bottom: 8px;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      background-color: var(--btn-rose);
+      color: var(--white);
+      border: none;
+      padding: 7px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: auto;
+    }
+
+    /* Mobile Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--white);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #eeddd7;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.75rem;
+      gap: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--btn-rose);
+      font-weight: 600;
+    }
+
+    .nav-item i {
+      font-size: 1.15rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header -->
+  <header>
+    <a href="#" class="brand-logo">Jeevi <span>Crafts</span></a>
+    <div class="header-icons">
+      <a href="wishlist.html"><i class="fa-regular fa-heart"></i></a>
+      <a href="cart.html">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="badge" id="cartCount">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass" style="color: var(--primary);"></i>
+      <input type="text" placeholder="வளையல்கள் மற்றும் கிராஃப்ட் தேடுங்கள்...">
+    </div>
+  </div>
+
+  <!-- Promotional Banner -->
+  <div class="promo-banner">
+    <h2>Silk Thread Sets</h2>
+    <p>பாரம்பரிய கைவினை வளையல்கள் 20% தள்ளுபடி</p>
+    <a href="#featured" class="promo-btn">Explore Now</a>
+  </div>
+
+  <!-- Categories -->
+  <div class="section-title">
+    <h3>வகைகள் (Categories)</h3>
+  </div>
+  <div class="categories-list">
+    <div class="category-chip active">All</div>
+    <div class="category-chip">Silk Thread</div>
+    <div class="category-chip">Bridal Bangles</div>
+    <div class="category-chip">Glass Bangles</div>
+    <div class="category-chip">Handmade Crafts</div>
+  </div>
+
+  <!-- Featured Products -->
+  <div class="section-title" id="featured">
+    <h3>பிரபலமானவை (Featured)</h3>
+    <a href="shop.html">View All</a>
+  </div>
+
+  <div class="products-grid" id="featuredProducts">
+    <!-- Demo Card 1 -->
+    <div class="product-card">
+      <div class="wishlist-icon"><i class="fa-regular fa-heart"></i></div>
+      <img src="https://images.unsplash.com/photo-1611591475878-8316fef464d1?w=500&q=80" class="product-img" alt="Bangle">
+      <div class="product-info">
+        <span class="product-cat">Silk Thread</span>
+        <h4 class="product-name">Pink Bridal Silk Bangle</h4>
+        <span class="product-price">₹299</span>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+
+    <!-- Demo Card 2 -->
+    <div class="product-card">
+      <div class="wishlist-icon"><i class="fa-regular fa-heart"></i></div>
+      <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&q=80" class="product-img" alt="Bangle">
+      <div class="product-info">
+        <span class="product-cat">Handmade</span>
+        <h4 class="product-name">Golden Kundan Kada</h4>
+        <span class="product-price">₹450</span>
+        <button class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Bar -->
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="shop.html" class="nav-item">
+      <i class="fa-solid fa-shapes"></i>
+      <span>Shop</span>
+    </a>
+    <a href="cart.html" class="nav-item">
+      <i class="fa-solid fa-bag-shopping"></i>
+      <span>Cart</span>
+    </a>
+    <a href="orders.html" class="nav-item">
+      <i class="fa-solid fa-box-open"></i>
+      <span>Orders</span>
+    </a>
+    <a href="profile.html" class="nav-item">
+      <i class="fa-solid fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </div>
+
+  <!-- Firebase Modular Integration Script -->
+  <script type="module">
+    import { db, collection, getDocs } from "./js/firebase-config.js";
+
+    const featuredContainer = document.getElementById("featuredProducts");
+
+    async function loadLiveProducts() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        
+        if (querySnapshot.empty) {
+          featuredContainer.innerHTML = "<p style='grid-column: span 2; text-align: center;'>பொருட்கள் எதுவும் இல்லை.</p>";
+          return;
+        }
+
+        featuredContainer.innerHTML = ""; // பழைய Demo கார்டுகளை நீக்குதல்
+
+        querySnapshot.forEach((docSnap) => {
+          const product = docSnap.data();
+          const pId = docSnap.id;
+
+          const card = document.createElement("div");
+          card.className = "product-card";
+          card.innerHTML = `
+            <div class="wishlist-icon" onclick="toggleWishlist('${pId}')">
+              <i class="fa-regular fa-heart"></i>
+            </div>
+            <img src="${product.imageUrl}" class="product-img" alt="${product.name}" onerror="this.src='https://via.placeholder.com/150'">
+            <div class="product-info">
+              <span class="product-cat">${product.category}</span>
+              <h4 class="product-name">${product.name}</h4>
+              <span class="product-price">₹${product.price}</span>
+              <button class="add-to-cart-btn" onclick="addToCart('${pId}', '${product.name}', ${product.price}, '${product.imageUrl}')">
+                Add to Cart
+              </button>
+            </div>
+          `;
+          featuredContainer.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Error loading products:", error);
+      }
+    }
+
+    // Add to Cart Logic (Local Storage)
+    window.addToCart = (id, name, price, img) => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const existing = cart.find(item => item.id === id);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, name, price, img, quantity: 1 });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartBadge();
+      alert("பொருள் Cart-ல் சேர்க்கப்பட்டது!");
+    };
+
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      const badge = document.getElementById("cartCount");
+      if (badge) badge.innerText = count;
+    }
+
+    // பக்கம் திறக்கும் போது இயக்க
+    loadLiveProducts();
+    updateCartBadge();
+  </script>
+
+</body>
+</html>
