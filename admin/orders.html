@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Orders Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #C76B85;          /* Dusty Rose */
+      --bg-cream: #FFF8F0;         /* Cream */
+      --accent-gold: #D4AF37;      /* Gold */
+      --text-dark: #3B2A24;        /* Dark Brown */
+      --btn-rose: #B84F70;         /* Rose Pink */
+      --card-pink: #FCE8EF;        /* Soft Pink */
+      --white: #FFFFFF;            /* White */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      padding: 16px;
+      padding-bottom: 40px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--card-pink);
+    }
+
+    header h2 {
+      color: var(--primary);
+      font-size: 1.25rem;
+    }
+
+    .nav-links a {
+      color: var(--btn-rose);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-left: 12px;
+    }
+
+    .order-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid var(--card-pink);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed #eeddd7;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cust-details {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      background: var(--card-pink);
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .items-list {
+      margin-bottom: 10px;
+    }
+
+    .item-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      padding: 3px 0;
+    }
+
+    .order-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #eeddd7;
+      padding-top: 10px;
+      margin-top: 8px;
+      gap: 10px;
+    }
+
+    select {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #dcccd0;
+      background: var(--bg-cream);
+      font-size: 0.85rem;
+      outline: none;
+      font-weight: 600;
+    }
+
+    .update-btn {
+      background: var(--btn-rose);
+      color: var(--white);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Orders Management</h2>
+    <div class="nav-links">
+      <a href="index.html">Products</a>
+    </div>
+  </header>
+
+  <div id="adminOrdersContainer">ஆர்டர்கள் ஏற்றப்படுகின்றன...</div>
+
+  <script type="module">
+    import { 
+      auth, 
+      db, 
+      collection, 
+      getDocs, 
+      doc, 
+      updateDoc, 
+      onAuthStateChanged 
+    } from "../js/firebase-config.js";
+
+    const ADMIN_EMAIL = "tharuntharu7489@gmail.com";
+    const container = document.getElementById("adminOrdersContainer");
+
+    // Admin Auth Check
+    onAuthStateChanged(auth, (user) => {
+      if (!user || user.email !== ADMIN_EMAIL) {
+        alert("அனுமதி இல்லை! Admin மட்டும் உள்நுழைய முடியும்.");
+        window.location.href = "../login.html";
+      } else {
+        loadAllOrders();
+      }
+    });
+
+    async function loadAllOrders() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "orders"));
+
+        if (querySnapshot.empty) {
+          container.innerHTML = "<p style='text-align: center; color: #666;'>ஆர்டர்கள் எதுவும் வரவில்லை.</p>";
+          return;
+        }
+
+        container.innerHTML = "";
+
+        querySnapshot.forEach((docSnap) => {
+          const order = docSnap.data();
+          const orderId = docSnap.id;
+
+          let itemsHtml = "";
+          order.items.forEach(i => {
+            itemsHtml += `
+              <div class="item-line">
+                <span>${i.name} (x${i.quantity})</span>
+                <span>₹${i.price * i.quantity}</span>
+              </div>
+            `;
+          });
+
+          const card = document.createElement("div");
+          card.className = "order-card";
+          card.innerHTML = `
+            <div class="order-header">
+              <strong>Order ID: #${orderId.substring(0, 6)}</strong>
+              <span style="font-size: 0.8rem; color: #666;">${new Date(order.orderDate).toLocaleDateString()}</span>
+            </div>
+
+            <div class="cust-details">
+              <div><strong>வாடிக்கையாளர்:</strong> ${order.customerName} (${order.phone})</div>
+              <div><strong>முகவரி:</strong> ${order.address}</div>
+              <div><strong>Payment:</strong> ${order.paymentMethod} (${order.paymentStatus || 'Success'})</div>
+            </div>
+
+            <div class="items-list">
+              ${itemsHtml}
+              <div style="text-align: right; font-weight: bold; margin-top: 4px; color: var(--btn-rose);">
+                Total: ₹${order.totalAmount}
+              </div>
+            </div>
+
+            <div class="order-action">
+              <select id="status-${orderId}">
+                <option value="Placed" ${order.orderStatus === 'Placed' ? 'selected' : ''}>Placed</option>
+                <option value="Confirmed" ${order.orderStatus === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="Packed" ${order.orderStatus === 'Packed' ? 'selected' : ''}>Packed</option>
+                <option value="Shipped" ${order.orderStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="Delivered" ${order.orderStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="Cancelled" ${order.orderStatus === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+              <button class="update-btn" onclick="updateOrderStatus('${orderId}')">Update Status</button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        container.innerHTML = `<p style="color: red;">பிழை: ${err.message}</p>`;
+      }
+    }
+
+    // Status Update Function
+    window.updateOrderStatus = async (orderId) => {
+      const newStatus = document.getElementById(`status-${orderId}`).value;
+      try {
+        await updateDoc(doc(db, "orders", orderId), {
+          orderStatus: newStatus
+        });
+        alert("ஆர்டர் நிலை மாற்றப்பட்டது: " + newStatus);
+      } catch (err) {
+        alert("நிலை மாற்றுவதில் பிழை: " + err.message);
+      }
+    };
+  </script>
+</body>
+  </html>
+                                     
