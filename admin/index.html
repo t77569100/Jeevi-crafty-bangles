@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Jeevi Crafty Bangles</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #C76B85;          /* Dusty Rose */
+      --bg-cream: #FFF8F0;         /* Cream */
+      --accent-gold: #D4AF37;      /* Gold */
+      --text-dark: #3B2A24;        /* Dark Brown */
+      --btn-rose: #B84F70;         /* Rose Pink */
+      --card-pink: #FCE8EF;        /* Soft Pink */
+      --white: #FFFFFF;            /* White */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      padding: 16px;
+      padding-bottom: 40px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--card-pink);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .orders-link {
+      color: var(--btn-rose);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .logout-btn {
+      background: none;
+      border: 1px solid var(--btn-rose);
+      color: var(--btn-rose);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .form-container {
+      background: var(--white);
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid var(--card-pink);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+
+    .form-title {
+      font-size: 1.1rem;
+      margin-bottom: 14px;
+      color: var(--btn-rose);
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #dcccd0;
+      border-radius: 6px;
+      outline: none;
+      font-size: 0.9rem;
+      background: var(--bg-cream);
+    }
+
+    button.submit-btn {
+      width: 100%;
+      background: var(--btn-rose);
+      color: var(--white);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .msg-box {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    .success { background: #e6ffed; color: #27ae60; }
+    .error { background: #ffe6e6; color: #d63031; }
+
+    .product-list-title {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .admin-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--card-pink);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .admin-card img {
+      width: 65px;
+      height: 65px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .admin-card-details {
+      flex: 1;
+    }
+
+    .admin-card-details h4 {
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .admin-card-details p {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .delete-btn {
+      background: #ffe6e6;
+      border: none;
+      color: #d63031;
+      padding: 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Admin Dashboard</h2>
+    <div class="header-actions">
+      <a href="orders.html" class="orders-link">Orders</a>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- Add Product Form -->
+  <div class="form-container">
+    <div class="form-title">புதிய Product சேர்க்க</div>
+    <form id="addProductForm">
+      <div class="form-group">
+        <label>Product பெயர்</label>
+        <input type="text" id="pName" placeholder="எ.கா: Pink Bridal Silk Bangle" required>
+      </div>
+
+      <div class="form-group">
+        <label>விலை (₹ Price)</label>
+        <input type="number" id="pPrice" placeholder="299" required>
+      </div>
+
+      <div class="form-group">
+        <label>வகை (Category)</label>
+        <select id="pCategory">
+          <option value="Silk Thread">Silk Thread</option>
+          <option value="Bridal Bangles">Bridal Bangles</option>
+          <option value="Glass Bangles">Glass Bangles</option>
+          <option value="Handmade Crafts">Handmade Crafts</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>இருப்பு (Stock)</label>
+        <input type="number" id="pStock" placeholder="10" required>
+      </div>
+
+      <div class="form-group">
+        <label>Product Image Link (URL)</label>
+        <input type="url" id="pImageUrl" placeholder="https://..." required>
+      </div>
+
+      <div class="form-group">
+        <label>விளக்கம் (Description)</label>
+        <textarea id="pDesc" rows="3" placeholder="தயாரிப்பு பற்றிய விவரம்..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" id="saveBtn">Save Product</button>
+    </form>
+    <div id="feedback" class="msg-box"></div>
+  </div>
+
+  <!-- Product List -->
+  <div class="product-list-title">தற்போது உள்ள Products</div>
+  <div id="productsList">பொருட்கள் ஏற்றப்படுகின்றன...</div>
+
+  <script type="module">
+    import { 
+      auth, 
+      db, 
+      collection, 
+      addDoc, 
+      getDocs, 
+      deleteDoc, 
+      doc, 
+      signOut, 
+      onAuthStateChanged 
+    } from "../js/firebase-config.js";
+
+    const ADMIN_EMAIL = "tharuntharu7489@gmail.com";
+    const feedback = document.getElementById("feedback");
+    const productsList = document.getElementById("productsList");
+
+    // Login சரிபார்ப்பு
+    onAuthStateChanged(auth, (user) => {
+      if (!user || user.email !== ADMIN_EMAIL) {
+        alert("அனுமதி இல்லை! Admin மட்டும் உள்நுழைய முடியும்.");
+        window.location.href = "../login.html";
+      } else {
+        loadProducts();
+      }
+    });
+
+    // Add Product Function
+    document.getElementById("addProductForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById("saveBtn");
+      saveBtn.disabled = true;
+      saveBtn.innerText = "Saving...";
+
+      try {
+        await addDoc(collection(db, "products"), {
+          name: document.getElementById("pName").value.trim(),
+          price: Number(document.getElementById("pPrice").value),
+          category: document.getElementById("pCategory").value,
+          stock: Number(document.getElementById("pStock").value),
+          imageUrl: document.getElementById("pImageUrl").value.trim(),
+          description: document.getElementById("pDesc").value.trim(),
+          createdAt: new Date().toISOString()
+        });
+
+        showMsg("Product வெற்றிகரமாகச் சேர்க்கப்பட்டது!", "success");
+        document.getElementById("addProductForm").reset();
+        loadProducts();
+      } catch (err) {
+        showMsg("பிழை: " + err.message, "error");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerText = "Save Product";
+      }
+    };
+
+    // Load Products
+    async function loadProducts() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        productsList.innerHTML = "";
+
+        if (querySnapshot.empty) {
+          productsList.innerHTML = "<p style='color: #666;'>இன்னும் எந்தப் பொருளும் சேர்க்கப்படவில்லை.</p>";
+          return;
+        }
+
+        querySnapshot.forEach((docSnap) => {
+          const p = docSnap.data();
+          const card = document.createElement("div");
+          card.className = "admin-card";
+          card.innerHTML = `
+            <img src="${p.imageUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/65'">
+            <div class="admin-card-details">
+              <h4>${p.name}</h4>
+              <p>விலை: ₹${p.price} | Stock: ${p.stock}</p>
+              <p style="color: var(--primary); font-weight: 600;">${p.category}</p>
+            </div>
+            <button class="delete-btn" onclick="deleteProduct('${docSnap.id}')">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          `;
+          productsList.appendChild(card);
+        });
+      } catch (err) {
+        productsList.innerHTML = "<p>பொருட்களை ஏற்றுவதில் பிழை.</p>";
+      }
+    }
+
+    // Delete Product
+    window.deleteProduct = async (id) => {
+      if (confirm("நிச்சயமாக இந்த பொருளை நீக்க வேண்டுமா?")) {
+        try {
+          await deleteDoc(doc(db, "products", id));
+          loadProducts();
+        } catch (err) {
+          alert("நீக்குவதில் பிழை: " + err.message);
+        }
+      }
+    };
+
+    // Logout
+    document.getElementById("logoutBtn").onclick = async () => {
+      await signOut(auth);
+      window.location.href = "../login.html";
+    };
+
+    function showMsg(text, type) {
+      feedback.innerText = text;
+      feedback.className = `msg-box ${type}`;
+      feedback.style.display = "block";
+      setTimeout(() => feedback.style.display = "none", 3000);
+    }
+  </script>
+</body>
+  </html>
+  
